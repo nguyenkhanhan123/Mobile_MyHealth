@@ -1,0 +1,341 @@
+import 'package:al_datn_my_health/view/collect_user_data/choose_weight_target.dart';
+import 'package:flutter/material.dart';
+import 'package:numberpicker/numberpicker.dart';
+
+import '../../model/user_info.dart';
+
+class ChooseWeight extends StatefulWidget {
+  final UserInfo userInfo;
+  const ChooseWeight({super.key, required this.userInfo});
+  @override
+  _ChooseWeightState createState() {
+    return _ChooseWeightState();
+  }
+}
+
+class _ChooseWeightState extends State<ChooseWeight> {
+  int _currentValue = 42;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(90),
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.white,
+          title: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              LinearProgressIndicator(
+                color: Color.fromARGB(255, 57, 206, 41),
+                backgroundColor: Color.fromARGB(255, 215, 236, 255),
+                value: 6/12,
+                minHeight: 6,
+                borderRadius: BorderRadius.all(Radius.circular(90)),
+              ),
+              SizedBox(height: 4),
+              RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: "My",
+                      style: TextStyle(
+                        fontFamily: "SVN_Ready",
+                        fontSize: 32,
+                        color: Colors.black,
+                      ),
+                    ),
+                    TextSpan(
+                      text: "Health",
+                      style: TextStyle(
+                        fontFamily: "SVN_Ready",
+                        fontSize: 32,
+                        color: Colors.green,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(flex: 1, child: Image.asset('assets/images/ic_weight.png')),
+          Container(
+            margin: EdgeInsets.all(15),
+            child: Text(
+              'Cân nặng của bạn là bao nhiêu?',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 28,
+                fontFamily: "SVN_Comic",
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 3,
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 25),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  NumberPicker(
+                    value: _currentValue,
+                    minValue: 22,
+                    maxValue: 80,
+                    step: 1,
+                    itemWidth: 50,
+                    itemCount: 5,
+                    axis: Axis.horizontal,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.blueAccent, width: 2),
+                    ),
+                    selectedTextStyle: const TextStyle(
+                      fontSize: 24,
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    textStyle: const TextStyle(fontSize: 20, color: Colors.grey),
+                    onChanged: (value) => setState(() => _currentValue = value),
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(15),
+                    child: Text(
+                      'Chỉ số khối cơ thể (BMI) của bạn là',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontFamily: "SVN_Comic",
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(15),
+                    child: Text(
+                      '24,0',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 22,
+                        fontFamily: "SVN_Comic",
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.all(15),
+                    child: Text(
+                      'BMI của bạn cho thấy bạn đang',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontFamily: "SVN_Comic",
+                      ),
+                    ),
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Text(
+                        '18.5',
+                        maxLines: 1,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 12,
+                          fontFamily: "SVN_Comic",
+                        ),
+                      ),
+                      Text(
+                        '23.0',
+                        maxLines: 1,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 12,
+                          fontFamily: "SVN_Comic",
+                        ),
+                      ),
+                      Text(
+                        '25.0',
+                        maxLines: 1,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 12,
+                          fontFamily: "SVN_Comic",
+                        ),
+                      ),
+                      Text(
+                        '30.0',
+                        maxLines: 1,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 12,
+                          fontFamily: "SVN_Comic",
+                        ),
+                      ),
+                    ],
+                  ),
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                        height: 4,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(90),
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.lightBlueAccent,
+                              Colors.green,
+                              Colors.orange,
+                              Colors.redAccent,
+                              Colors.brown,
+                            ],
+                            stops: [0, 0.25, 0.5, 0.75, 1],
+                          ),
+                        ),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(flex:1, child: SizedBox(width: 0)),
+                          Center(
+                            child: Icon(
+                              Icons.circle,
+                              size: 12,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Expanded(flex:0, child: SizedBox(width: 0))
+                        ],
+                      )
+                    ],
+                  )
+                  ,
+                  SizedBox(height: 4),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Thiếu cân',
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontFamily: "SVN_Comic",
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          'Bình thường',
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontFamily: "SVN_Comic",
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          'Thừa cân',
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontFamily: "SVN_Comic",
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          'Béo phì',
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 12,
+                            fontFamily: "SVN_Comic",
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          'Béo phì nặng',
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 12,
+                            fontFamily: "SVN_Comic",
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: 20, bottom: 40),
+            child: Align(
+              alignment: Alignment.center,
+              child: TextButton.icon(
+                onPressed: () {
+                  widget.userInfo.weight=_currentValue;
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ChooseWeightTarget(userInfo: widget.userInfo)),
+                  );
+                },
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.green,
+                  padding: EdgeInsets.symmetric(horizontal: 35, vertical: 9),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                ),
+                icon: Icon(
+                  Icons.subdirectory_arrow_right_outlined,
+                  size: 24,
+                  color: Colors.white,
+                ),
+                label: Text(
+                  'Tiếp tục',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontFamily: "SVN_Comic",
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
