@@ -1,14 +1,16 @@
 class LoginRes {
   final String message;
-  final Account account;
+  final Account? account;
   final int? idUserInfo;
 
-  LoginRes({this.idUserInfo, required this.message, required this.account});
+  LoginRes({this.idUserInfo, required this.message, this.account});
 
   factory LoginRes.fromJson(Map<String, dynamic> json) {
     return LoginRes(
       message: json['message'] as String,
-      account: Account.fromJson(json['account']),
+      account: json['account'] != null
+          ? Account.fromJson(json['account'])
+          : null,
       idUserInfo: json['idUserInfo'] as int?,
     );
   }

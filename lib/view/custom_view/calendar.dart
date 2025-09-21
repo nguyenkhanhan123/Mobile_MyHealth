@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Calendar extends StatefulWidget {
   final DateTime dateTime;
@@ -144,9 +145,21 @@ class _CalendarState extends State<Calendar> {
 
         return GestureDetector(
           onTap: day.isNotEmpty
-              ? () {
+              ? () async {
             DateTime selected = DateTime(_currentYear, _currentMonth, int.parse(day));
-            Navigator.pop(context, selected);
+            DateTime today = DateTime.now();
+            if (selected.isAfter(DateTime(today.year, today.month, today.day))) {
+              await Fluttertoast.showToast(
+                msg: "Không thể chọn ngày trong tương lai để quản lý!",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: Colors.black87,
+                textColor: Colors.white,
+                fontSize: 16.0,
+              );
+            } else {
+              Navigator.pop(context, selected);
+            }
           }
               : null,
           child: Container(

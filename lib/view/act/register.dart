@@ -87,9 +87,9 @@ class _RegisterState extends State<Register> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    // Username
                     TextFormField(
                       controller: _usernameController,
+                      cursorColor: Colors.black,
                       decoration: InputDecoration(
                         labelText: "Username",
                         labelStyle: TextStyle(color: Colors.grey),
@@ -119,6 +119,7 @@ class _RegisterState extends State<Register> {
                     TextFormField(
                       controller: _passwordController,
                       obscureText: _obscurePassword,
+                      cursorColor: Colors.black,
                       decoration: InputDecoration(
                         labelText: "Password",
                         labelStyle: TextStyle(color: Colors.grey),
@@ -162,6 +163,7 @@ class _RegisterState extends State<Register> {
                     TextFormField(
                       controller: _confirmPasswordController,
                       obscureText: _obscureConfirmPassword,
+                      cursorColor: Colors.black,
                       decoration: InputDecoration(
                         labelText: "Confirm Password",
                         labelStyle: TextStyle(color: Colors.grey),

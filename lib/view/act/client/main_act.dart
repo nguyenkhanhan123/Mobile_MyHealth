@@ -1,9 +1,7 @@
-import 'dart:math';
-
-import 'package:al_datn_my_health/model/item_nutrients.dart';
-import 'package:al_datn_my_health/view/custom_view/item_nutrients_view.dart';
-import 'package:al_datn_my_health/view/custom_view/list_nutrients_view.dart';
-import 'package:al_datn_my_health/view/frag/home_frag.dart';
+import 'package:al_datn_my_health/view/frag/client/ai_frag.dart';
+import 'package:al_datn_my_health/view/frag/client/home_frag.dart';
+import 'package:al_datn_my_health/view/frag/client/note_frag.dart';
+import 'package:al_datn_my_health/view/frag/client/settings_frag.dart';
 import 'package:flutter/material.dart';
 
 class MainAct extends StatefulWidget {
@@ -19,11 +17,11 @@ class _MainActState extends State<MainAct> {
       case 0:
         return HomeFrag();
       case 1:
-        return Center(child: Text("View2"));
+        return NoteFrag();
       case 2:
-        return Center(child: Text("View3"));
+        return AiFrag();
       case 3:
-        return Center(child: Text("View4"));
+        return SettingsFrag();
       default:
         return Container();
     }
@@ -60,7 +58,7 @@ class _MainActState extends State<MainAct> {
             icon: Icon(Icons.school),
             label: 'Chuyên gia',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Tài khoản'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Cài đặt'),
         ],
       ),
     );

@@ -1,8 +1,9 @@
 import 'package:al_datn_my_health/api/sever_api.dart';
 import 'package:al_datn_my_health/common_utils.dart';
 import 'package:al_datn_my_health/model/req/account_req.dart';
+import 'package:al_datn_my_health/view/act/admin/main_act_admin.dart';
 import 'package:al_datn_my_health/view/collect_user_data/introduce.dart';
-import 'package:al_datn_my_health/view/act/main_act.dart';
+import 'package:al_datn_my_health/view/act/client/main_act.dart';
 import 'package:al_datn_my_health/view/act/register.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -23,6 +24,8 @@ class _LoginState extends State<Login> {
 
   @override
   void dispose() {
+    _usernameController.clear();
+    _passwordController.clear();
     _usernameController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -87,6 +90,7 @@ class _LoginState extends State<Login> {
                     // Username
                     TextFormField(
                       controller: _usernameController,
+                      cursorColor: Colors.black,
                       decoration: InputDecoration(
                         labelText: "Username",
                         labelStyle: TextStyle(color: Colors.grey),
@@ -116,6 +120,7 @@ class _LoginState extends State<Login> {
                     TextFormField(
                       controller: _passwordController,
                       obscureText: _obscurePassword,
+                      cursorColor: Colors.black,
                       decoration: InputDecoration(
                         labelText: "Password",
                         labelStyle: TextStyle(color: Colors.grey),
@@ -215,7 +220,7 @@ class _LoginState extends State<Login> {
                         if (_formKey.currentState!.validate()) {
                           final String username = _usernameController.text;
                           final String password = _passwordController.text;
-                          _login(username, password);
+                          _loginAdmin(username, password);
                         }
                       },
                       style: TextButton.styleFrom(
@@ -258,9 +263,10 @@ class _LoginState extends State<Login> {
   Future<void> _login(String username, String password) async {
     final req = AccountReq(userName: username, passWord: password);
     final res = await SeverApi().loginAccount(req);
-    if (res != null && res.message == "Login successful") {
-      CommonUtils().savePref("id", res.account.id.toString());
-      if(res.account.isCollectionInfo==0){
+    if (res != null && res.message == "Login successful" && res.account != null) {
+      CommonUtils().savePref("id", res.account!.id.toString());
+      CommonUtils().savePref("idUserInfo", res.idUserInfo.toString());
+      if(res.account?.isCollectionInfo==0){
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => Introduce()),
@@ -272,6 +278,26 @@ class _LoginState extends State<Login> {
           MaterialPageRoute(builder: (context) => MainAct()),
         );
       }
+    } else {
+      await Fluttertoast.showToast(
+        msg: "Sai tài khoản, mật khẩu hoặc kết nối không ổn định!",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.black87,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
+  }
+
+  Future<void> _loginAdmin(String username, String password) async {
+    final req = AccountReq(userName: username, passWord: password);
+    final res = await SeverApi().loginAdmin(req);
+    if (res != null && res.message == "Login successful") {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => MainActAdmin()),
+        );
     } else {
       await Fluttertoast.showToast(
         msg: "Sai tài khoản, mật khẩu hoặc kết nối không ổn định!",

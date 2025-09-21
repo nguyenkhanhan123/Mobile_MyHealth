@@ -1,5 +1,5 @@
 import 'package:al_datn_my_health/model/food_mode.dart';
-import 'package:al_datn_my_health/view/act/main_act.dart';
+import 'package:al_datn_my_health/view/act/client/main_act.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 

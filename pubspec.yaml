@@ -65,6 +65,10 @@ flutter:
 
   assets:
     - assets/images/ic_logo_app.png
+    - assets/images/ic_exercise_time.png
+    - assets/images/ic_food_time.jpg
+    - assets/images/ic_drink_time.png
+    - assets/images/ic_ingredients.png
     - assets/images/ic_man.png
     - assets/images/ic_woman.png
     - assets/images/ic_gender.png
@@ -74,6 +78,8 @@ flutter:
     - assets/images/ic_weight.png
     - assets/images/ic_target.png
     - assets/images/ic_exercise.jpg
+    - assets/images/ic_exercise2.png
+    - assets/images/ic_exercise3.png
     - assets/images/ic_work_office.png
     - assets/images/ic_yoga.png
     - assets/images/ic_run.png
@@ -83,7 +89,16 @@ flutter:
     - assets/images/ic_limit.png
     - assets/images/ic_doctor.png
     - assets/images/ic_food_mode.png
-
+    - assets/images/ic_calo.png
+    - assets/images/ic_carbs.png
+    - assets/images/ic_fat.png
+    - assets/images/ic_protein.png
+    - assets/images/ic_glass_water.png
+    - assets/images/ic_breakfast.png
+    - assets/images/ic_fruits.png
+    - assets/images/ic_lunch.png
+    - assets/images/ic_dinner.png
+    - assets/images/ic_robot.jpg
   fonts:
     - family: SVN_Ready
       fonts:
