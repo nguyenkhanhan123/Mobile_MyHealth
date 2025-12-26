@@ -72,6 +72,8 @@ class _RegisterState extends State<Register> {
               margin: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
               child: Text(
                 'Register',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontFamily: "SVN_SAF",

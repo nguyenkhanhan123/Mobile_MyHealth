@@ -35,7 +35,7 @@ class _StatActState extends State<StatAct> {
                 Padding(
                   padding: EdgeInsets.all(5),
                   child: Text(
-                    'Thống kê',
+                    'Lịch',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: "SVN_SAF",

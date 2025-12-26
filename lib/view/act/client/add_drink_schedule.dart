@@ -17,11 +17,24 @@ class AddDrinkSchedule extends StatefulWidget {
 
 class _AddDrinkScheduleState extends State<AddDrinkSchedule> {
   List<InfoDrinkInDay> listItems = [];
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _loadData();
+    _loadAllData();
+  }
+
+  Future<void> _loadAllData() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    await _loadData();
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   Future<void> _loadData() async {
@@ -76,6 +89,8 @@ class _AddDrinkScheduleState extends State<AddDrinkSchedule> {
                     padding: EdgeInsets.all(5),
                     child: Text(
                       'Ghi lại nước',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.start,
                       style: TextStyle(
                         fontFamily: "SVN_SAF",
@@ -108,46 +123,57 @@ class _AddDrinkScheduleState extends State<AddDrinkSchedule> {
             Container(height: 1, color: Colors.green),
             Expanded(
               child:
-                  listItems.isEmpty
-                      ? Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.all(15),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.asset('assets/images/ic_drink_time.png'),
-                            Text(
-                              'It\'s drink time',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontFamily: "SVN_SAF",
-                                fontSize: 24,
-                                color: Colors.green,
+                  isLoading
+                      ? Center(
+                        child: CircularProgressIndicator(color: Colors.green),
+                      )
+                      : (listItems.isEmpty
+                          ? SingleChildScrollView(
+                            child: Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.symmetric(
+                                vertical: 45,
+                                horizontal: 15,
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    'assets/images/ic_drink_time.png',
+                                  ),
+                                  Text(
+                                    'It\'s drink time',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily: "SVN_SAF",
+                                      fontSize: 24,
+                                      color: Colors.green,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
-                      )
-                      : ListView.builder(
-                        itemCount: listItems.length,
-                        itemBuilder: (context, index) {
-                          return ItemDrinkInDay(
-                            infoDrinkInDay: listItems[index],
-                            onDelete: () async {
-                              final success = await _delete(
-                                listItems[index].id,
+                          )
+                          : ListView.builder(
+                            itemCount: listItems.length,
+                            itemBuilder: (context, index) {
+                              return ItemDrinkInDay(
+                                infoDrinkInDay: listItems[index],
+                                onDelete: () async {
+                                  final success = await _delete(
+                                    listItems[index].id,
+                                  );
+                                  if (success) {
+                                    setState(() {
+                                      listItems.removeAt(index);
+                                    });
+                                  }
+                                },
                               );
-                              if (success) {
-                                setState(() {
-                                  listItems.removeAt(index);
-                                });
-                              }
                             },
-                          );
-                        },
-                      ),
+                          )),
             ),
           ],
         ),

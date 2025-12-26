@@ -18,12 +18,15 @@ class _HashtagDialogState extends State<HashtagDialog> {
     Hashtag(id: 5, title: '#Hạt'),
     Hashtag(id: 6, title: '#ĐồLênMen'),
     Hashtag(id: 7, title: '#ThịtĐỏ'),
-    Hashtag(id: 8, title: '#MónChính'),
-    Hashtag(id: 9, title: '#RauXanh'),
-    Hashtag(id: 10, title: '#TráiCây'),
-    Hashtag(id: 11, title: '#BánhNgọt'),
-    Hashtag(id: 12, title: '#Lẩu'),
+    Hashtag(id: 8, title: '#ĐồĂnSẵn'),
+    Hashtag(id: 9, title: '#ĐồĂnNhanh'),
+    Hashtag(id: 10, title: '#MónChính'),
+    Hashtag(id: 11, title: '#RauXanh'),
+    Hashtag(id: 12, title: '#TráiCây'),
+    Hashtag(id: 13, title: '#BánhNgọt'),
+    Hashtag(id: 14, title: '#Lẩu'),
   ];
+
 
   Set<int> selectedIds = {};
 

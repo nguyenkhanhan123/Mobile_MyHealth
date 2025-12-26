@@ -23,11 +23,24 @@ class AddFoodSchedule extends StatefulWidget {
 class _AddFoodScheduleState extends State<AddFoodSchedule> {
   List<InfoMealInDay> listItems = [];
   bool isReset = false;
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _loadData();
+    _loadAllData();
+  }
+
+  Future<void> _loadAllData() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    await _loadData();
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   Future<void> _loadData() async {
@@ -101,6 +114,8 @@ class _AddFoodScheduleState extends State<AddFoodSchedule> {
                       padding: EdgeInsets.all(5),
                       child: Text(
                         'Ghi lại thực phẩm',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.start,
                         style: TextStyle(
                           fontFamily: "SVN_SAF",
@@ -125,7 +140,7 @@ class _AddFoodScheduleState extends State<AddFoodSchedule> {
                           ),
                         );
                         if (isReload == true) {
-                          _loadData();
+                          _loadAllData();
                           isReset = true;
                         }
                       },
@@ -137,47 +152,58 @@ class _AddFoodScheduleState extends State<AddFoodSchedule> {
               Container(height: 1, color: Colors.green),
               Expanded(
                 child:
-                    listItems.isEmpty
-                        ? Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.all(15),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image.asset('assets/images/ic_food_time.jpg'),
-                              Text(
-                                'It\'s ${widget.mealType} time',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontFamily: "SVN_SAF",
-                                  fontSize: 24,
-                                  color: Colors.green,
+                    isLoading
+                        ? Center(
+                          child: CircularProgressIndicator(color: Colors.green),
+                        )
+                        : (listItems.isEmpty
+                            ? SingleChildScrollView(
+                              child: Container(
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.symmetric(
+                                  vertical: 45,
+                                  horizontal: 15,
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/ic_food_time.jpg',
+                                    ),
+                                    Text(
+                                      'It\'s ${widget.mealType} time',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontFamily: "SVN_SAF",
+                                        fontSize: 24,
+                                        color: Colors.green,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
-                        )
-                        : ListView.builder(
-                          itemCount: listItems.length,
-                          itemBuilder: (context, index) {
-                            return ItemMealInDay(
-                              infoMealInDay: listItems[index],
-                              onDelete: () async {
-                                final success = await _delete(
-                                  listItems[index].id,
+                            )
+                            : ListView.builder(
+                              itemCount: listItems.length,
+                              itemBuilder: (context, index) {
+                                return ItemMealInDay(
+                                  infoMealInDay: listItems[index],
+                                  onDelete: () async {
+                                    final success = await _delete(
+                                      listItems[index].id,
+                                    );
+                                    if (success) {
+                                      setState(() {
+                                        listItems.removeAt(index);
+                                        isReset = true;
+                                      });
+                                    }
+                                  },
                                 );
-                                if (success) {
-                                  setState(() {
-                                    listItems.removeAt(index);
-                                    isReset=true;
-                                  });
-                                }
                               },
-                            );
-                          },
-                        ),
+                            )),
               ),
             ],
           ),

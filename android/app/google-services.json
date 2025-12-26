@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "261263736824",
+    "project_id": "foodai-2a6fb",
+    "storage_bucket": "foodai-2a6fb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:261263736824:android:a898e2e653fcb0f65ce00d",
+        "android_client_info": {
+          "package_name": "com.dragnell.al_datn_my_health"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkzYxXwmpBa5ODp_52goA0h_Ueg34y-jo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

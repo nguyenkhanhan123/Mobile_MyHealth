@@ -31,24 +31,17 @@ class _TimeExerciseDialogState extends State<TimeExerciseDialog> {
     return AlertDialog(
       title: Text(
         widget.infoExercise.nameExercise,
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 22,
-          fontFamily: "SVN_Comic",
-          fontWeight: FontWeight.bold,
-        ),
+        style: TextStyle(color: Colors.black, fontSize: 22, fontFamily: "SVN_Comic", fontWeight: FontWeight.bold),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            widget.infoExercise.detail.replaceAll(r'\n', '\n'),
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.grey,
-              fontFamily: "SVN_Comic",
+          SingleChildScrollView(
+            child: Text(
+              widget.infoExercise.detail.replaceAll(r'\n', '\n'),
+              style: TextStyle(fontSize: 18, color: Colors.grey, fontFamily: "SVN_Comic"),
             ),
           ),
           SizedBox(height: 8),
@@ -56,14 +49,7 @@ class _TimeExerciseDialogState extends State<TimeExerciseDialog> {
             children: [
               Column(
                 children: [
-                  Text(
-                    "Mức độ",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                      fontFamily: "SVN_Comic",
-                    ),
-                  ),
+                  Text("Mức độ", style: TextStyle(fontSize: 18, color: Colors.black, fontFamily: "SVN_Comic")),
                   SizedBox(height: 8),
                   DropdownButton<String>(
                     value: selectedValue,
@@ -71,13 +57,7 @@ class _TimeExerciseDialogState extends State<TimeExerciseDialog> {
                         items.map((str) {
                           return DropdownMenuItem<String>(
                             value: str,
-                            child: Text(
-                              str,
-                              style: TextStyle(
-                                fontFamily: "SVN_Comic",
-                                fontSize: 16,
-                              ),
-                            ),
+                            child: Text(str, style: TextStyle(fontFamily: "SVN_Comic", fontSize: 16)),
                           );
                         }).toList(),
                     onChanged: (value) {
@@ -91,14 +71,7 @@ class _TimeExerciseDialogState extends State<TimeExerciseDialog> {
               SizedBox(width: 8),
               Column(
                 children: [
-                  Text(
-                    "Thời gian",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.black,
-                      fontFamily: "SVN_Comic",
-                    ),
-                  ),
+                  Text("Thời gian", style: TextStyle(fontSize: 18, color: Colors.black, fontFamily: "SVN_Comic")),
                   SizedBox(height: 8),
                   Row(
                     children: [
@@ -111,36 +84,18 @@ class _TimeExerciseDialogState extends State<TimeExerciseDialog> {
                           textAlign: TextAlign.center,
                           maxLength: 3,
                           decoration: InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.green,
-                                width: 2,
-                              ),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.green,
-                                width: 3,
-                              ),
-                            ),
+                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.green, width: 2)),
+                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.green, width: 3)),
                             counterText: "",
                           ),
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontFamily: "SVN_Comic",
-                            fontSize: 18,
-                          ),
+                          style: TextStyle(color: Colors.black, fontFamily: "SVN_Comic", fontSize: 18),
                         ),
                       ),
                       SizedBox(width: 4),
                       Text(
                         "phút",
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                          fontFamily: "SVN_Comic",
-                        ),
+                        style: TextStyle(color: Colors.black, fontSize: 18, fontFamily: "SVN_Comic"),
                       ),
                     ],
                   ),
@@ -154,11 +109,7 @@ class _TimeExerciseDialogState extends State<TimeExerciseDialog> {
         TextButton(
           child: const Text(
             "Đồng ý",
-            style: TextStyle(
-              color: Colors.blueAccent,
-              fontSize: 20,
-              fontFamily: "SVN_Comic",
-            ),
+            style: TextStyle(color: Colors.blueAccent, fontSize: 20, fontFamily: "SVN_Comic"),
           ),
           onPressed: () async {
             final idUserInfo = await CommonUtils().getPref("idUserInfo");
@@ -169,13 +120,7 @@ class _TimeExerciseDialogState extends State<TimeExerciseDialog> {
             final formattedDate =
                 "${widget.selectedDate.year}-${widget.selectedDate.month.toString().padLeft(2, '0')}-${widget.selectedDate.day.toString().padLeft(2, '0')}";
             if (value != null && selectedValue != null && result != null) {
-              final sucess = await _addExercise(
-                result,
-                widget.infoExercise.id,
-                value,
-                selectedValue!,
-                formattedDate
-              );
+              final sucess = await _addExercise(result, widget.infoExercise.id, value, selectedValue!, formattedDate);
               if (sucess) {
                 Navigator.pop(context, true);
               }
@@ -186,23 +131,18 @@ class _TimeExerciseDialogState extends State<TimeExerciseDialog> {
     );
   }
 
-  Future<bool> _addExercise(
-    int userId,
-    int exerciseId,
-    int time,
-    String levelExercise, String date,
-  ) async {
+  Future<bool> _addExercise(int userId, int exerciseId, int time, String levelExercise, String date) async {
     final req = AddExerciseReq(
       userId: userId,
       exerciseId: exerciseId,
       levelExercise: levelExercise,
       time: time,
-      date: date
+      date: date,
     );
     final res = await SeverApi().addExercise(req);
     if (res != null && res.message == "Create exercise successful") {
       await Fluttertoast.showToast(
-        msg: "Thêm nước uống thành công!",
+        msg: "Thêm bài tập thành công!",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.black87,
@@ -212,7 +152,7 @@ class _TimeExerciseDialogState extends State<TimeExerciseDialog> {
       return true;
     } else {
       await Fluttertoast.showToast(
-        msg: "Chưa thể thêm nước uống hoặc kết nối không ổn định!",
+        msg: "Chưa thể thêm bài tập hoặc kết nối không ổn định!",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.black87,

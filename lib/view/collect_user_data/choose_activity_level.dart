@@ -6,7 +6,9 @@ import '../../model/user_info.dart';
 
 class ChooseActivityLevel extends StatefulWidget {
   final UserInfo userInfo;
-  const ChooseActivityLevel({super.key, required this.userInfo});
+  final int? idUserInfo;
+  const ChooseActivityLevel({super.key, required this.userInfo, this.idUserInfo});
+
   @override
   _ChooseActivityLevelState createState() {
     return _ChooseActivityLevelState();
@@ -68,7 +70,7 @@ class _ChooseActivityLevelState extends State<ChooseActivityLevel> {
               LinearProgressIndicator(
                 color: Color.fromARGB(255, 57, 206, 41),
                 backgroundColor: Color.fromARGB(255, 215, 236, 255),
-                value: 8/12,
+                value: 8 / 12,
                 minHeight: 6,
                 borderRadius: BorderRadius.all(Radius.circular(90)),
               ),
@@ -99,29 +101,29 @@ class _ChooseActivityLevelState extends State<ChooseActivityLevel> {
           ),
         ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            flex: 1,
-            child: Image.asset('assets/images/ic_exercise.jpg'),
-          ),
-          Container(
-            margin: EdgeInsets.fromLTRB(15, 15, 15, 8),
-            child: Text(
-              'Bạn hoạt động hàng ngày như thế nào?',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 28,
-                fontFamily: "SVN_Comic",
-                fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/images/ic_exercise.jpg',
+              width: 145,
+              height: 145,
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(15, 15, 15, 8),
+              child: Text(
+                'Bạn hoạt động hàng ngày như thế nào?',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 28,
+                  fontFamily: "SVN_Comic",
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          Expanded(
-            flex: 4,
-            child: Container(
+            Container(
               margin: EdgeInsets.symmetric(horizontal: 15),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
@@ -131,10 +133,10 @@ class _ChooseActivityLevelState extends State<ChooseActivityLevel> {
                   Container(
                     margin: const EdgeInsets.symmetric(
                       vertical: 8,
-                      horizontal: 12,
+                      horizontal: 6,
                     ),
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
+                      horizontal: 6,
                       vertical: 8,
                     ),
                     decoration: BoxDecoration(
@@ -165,14 +167,18 @@ class _ChooseActivityLevelState extends State<ChooseActivityLevel> {
 
                           child: const Icon(Icons.arrow_back, size: 24),
                         ),
-                        Text(
-                          list[_currentIndex].title,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 20,
-                            fontFamily: "SVN_Comic",
-                            fontWeight: FontWeight.bold,
+                        Expanded(
+                          child: Text(
+                            list[_currentIndex].title,
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontFamily: "SVN_Comic",
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                         ElevatedButton(
@@ -198,77 +204,78 @@ class _ChooseActivityLevelState extends State<ChooseActivityLevel> {
                     ),
                   ),
                   const SizedBox(height: 6),
-                  Expanded(
-                    flex: 1,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: Image.asset(
-                        list[_currentIndex].url,
-                        fit: BoxFit.contain,
-                      ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 15),
+                  child:   ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Image.asset(
+                      list[_currentIndex].url,
+                      fit: BoxFit.contain,
                     ),
                   ),
+                ),
                   const SizedBox(height: 6),
-                  Expanded(
-                    flex: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      child: Text(
-                        list[_currentIndex].detail,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Colors.black87,
-                          fontSize: 16,
-                          fontFamily: "SVN_Comic",
-                        ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    child: Text(
+                      list[_currentIndex].detail,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.black87,
+                        fontSize: 16,
+                        fontFamily: "SVN_Comic",
                       ),
                     ),
                   ),
                 ],
               ),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 10, bottom: 40),
-            child: Align(
-              alignment: Alignment.center,
-              child: TextButton.icon(
-                onPressed: () {
-                  widget.userInfo.activityLevelId=list[_currentIndex].id;
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ChooseCompleteTarget(userInfo: widget.userInfo)),
-                  );
-                },
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.green,
-                  padding: EdgeInsets.symmetric(horizontal: 35, vertical: 9),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18),
+            Container(
+              margin: EdgeInsets.only(top: 10, bottom: 40),
+              child: Align(
+                alignment: Alignment.center,
+                child: TextButton.icon(
+                  onPressed: () {
+                    widget.userInfo.activityLevelId = list[_currentIndex].id;
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (context) =>
+                                ChooseCompleteTarget(userInfo: widget.userInfo,idUserInfo: widget.idUserInfo,),
+                      ),
+                    );
+                  },
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.green,
+                    padding: EdgeInsets.symmetric(horizontal: 35, vertical: 9),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
                   ),
-                ),
-                icon: Icon(
-                  Icons.subdirectory_arrow_right_outlined,
-                  size: 24,
-                  color: Colors.white,
-                ),
-                label: Text(
-                  'Tiếp tục',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
+                  icon: Icon(
+                    Icons.subdirectory_arrow_right_outlined,
+                    size: 24,
                     color: Colors.white,
-                    fontSize: 22,
-                    fontFamily: "SVN_Comic",
+                  ),
+                  label: Text(
+                    'Tiếp tục',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontFamily: "SVN_Comic",
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

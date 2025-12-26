@@ -62,6 +62,8 @@ class _DishFragState extends State<DishFrag> {
                 padding: EdgeInsets.all(5),
                 child: Text(
                   'Món ăn',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.start,
                   style: TextStyle(
                     fontFamily: "SVN_SAF",
@@ -174,7 +176,7 @@ class _DishFragState extends State<DishFrag> {
                                   _debounce!.cancel();
                                 }
                                 _debounce = Timer(
-                                  const Duration(milliseconds: 300),
+                                  const Duration(milliseconds: 200),
                                   () {
                                     if (value.isEmpty) {
                                       setState(() => suggestions = []);
@@ -207,10 +209,6 @@ class _DishFragState extends State<DishFrag> {
                             size: 24,
                           ),
                         ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(Icons.tune, color: Colors.black, size: 24),
-                        ),
                       ],
                     ),
                     Flexible(
@@ -219,7 +217,17 @@ class _DishFragState extends State<DishFrag> {
                         physics: ClampingScrollPhysics(),
                         itemCount: suggestions.length,
                         itemBuilder: (context, index) {
-                          return ItemSuggestion(text: suggestions[index]);
+                          return ItemSuggestion(
+                            text: suggestions[index],
+                            onTap: () {
+                              setState(() {
+                                _controller.text = suggestions[index];
+                                suggestions.clear();
+                              });
+                              _focusNode.unfocus();
+                              _findDish(_controller.text);
+                            },
+                          );
                         },
                       ),
                     ),

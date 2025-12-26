@@ -11,16 +11,30 @@ class ChooseExerciseAct extends StatefulWidget {
   final DateTime selectedDate;
 
   const ChooseExerciseAct({super.key, required this.selectedDate});
+
   @override
   _ChooseExerciseActState createState() => _ChooseExerciseActState();
 }
 
 class _ChooseExerciseActState extends State<ChooseExerciseAct> {
   List<InfoExercise> infoExercise = [];
+  bool isLoading = false;
   @override
   void initState() {
     super.initState();
-    _findExercise();
+    _loadAllData();
+  }
+
+  Future<void> _loadAllData() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    await _findExercise();
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -34,25 +48,16 @@ class _ChooseExerciseActState extends State<ChooseExerciseAct> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Padding(
-                  padding: EdgeInsets.all(5),
-                  child: Image.asset(
-                    'assets/images/ic_logo_app.png',
-                    width: 56,
-                    height: 56,
-                  ),
-                ),
+                Padding(padding: EdgeInsets.all(5), child: Image.asset('assets/images/ic_logo_app.png', width: 56, height: 56)),
                 Expanded(
                   child: Padding(
                     padding: EdgeInsets.all(5),
                     child: Text(
                       'Chọn bài tập',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       textAlign: TextAlign.start,
-                      style: TextStyle(
-                        fontFamily: "SVN_SAF",
-                        fontSize: 24,
-                        color: Colors.green,
-                      ),
+                      style: TextStyle(fontFamily: "SVN_SAF", fontSize: 24, color: Colors.green),
                     ),
                   ),
                 ),
@@ -60,12 +65,15 @@ class _ChooseExerciseActState extends State<ChooseExerciseAct> {
             ),
             Container(height: 1, color: Colors.green),
             Expanded(
-              child: ListView.builder(
-                itemCount: infoExercise.length,
-                itemBuilder: (context, index) {
-                  return ItemExercise(infoExercise: infoExercise[index],selectedDate: widget.selectedDate,);
-                },
-              ),
+              child:
+                  isLoading
+                      ? Center(child: CircularProgressIndicator(color: Colors.green))
+                      : ListView.builder(
+                        itemCount: infoExercise.length,
+                        itemBuilder: (context, index) {
+                          return ItemExercise(infoExercise: infoExercise[index], selectedDate: widget.selectedDate);
+                        },
+                      ),
             ),
           ],
         ),

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:al_datn_my_health/model/req/search_req.dart';
 import 'package:al_datn_my_health/model/res/list_food_res.dart';
+import 'package:al_datn_my_health/view/act/admin/add_food_act.dart';
 import 'package:al_datn_my_health/view/custom_view/item_suggestion.dart';
 import 'package:flutter/material.dart';
 
@@ -48,32 +49,32 @@ class _FoodFragState extends State<FoodFrag> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
-              padding: EdgeInsets.all(5),
-              child: Image.asset(
-                'assets/images/ic_logo_app.png',
-                width: 56,
-                height: 56,
-              ),
-            ),
+            Padding(padding: EdgeInsets.all(5), child: Image.asset('assets/images/ic_logo_app.png', width: 56, height: 56)),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.all(5),
                 child: Text(
                   'Nguyên liệu',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.start,
-                  style: TextStyle(
-                    fontFamily: "SVN_SAF",
-                    fontSize: 24,
-                    color: Colors.green,
-                  ),
+                  style: TextStyle(fontFamily: "SVN_SAF", fontSize: 24, color: Colors.green),
                 ),
               ),
             ),
             Padding(
               padding: EdgeInsets.all(5),
               child: IconButton(
-                onPressed: () {},
+                onPressed: () async {
+                  final isReload = await Navigator.push<bool>(context, MaterialPageRoute(builder: (context) => AddFoodAct()));
+                  if (isReload == true) {
+                    if (_controller.text.trim().isNotEmpty) {
+                      _findFood(_controller.text.trim());
+                    } else {
+                      _findFood("");
+                    }
+                  }
+                },
                 icon: Icon(Icons.add, color: Colors.green, size: 32),
               ),
             ),
@@ -86,39 +87,36 @@ class _FoodFragState extends State<FoodFrag> {
               Padding(
                 padding: EdgeInsets.only(top: 85),
                 child:
-                isLoading
-                    ? Center(
-                  child: CircularProgressIndicator(color: Colors.green),
-                )
-                    : NotificationListener<ScrollNotification>(
-                  onNotification: (scrollInfo) {
-                    if (!isLoadingMore &&
-                        hasMore &&
-                        scrollInfo.metrics.pixels ==
-                            scrollInfo.metrics.maxScrollExtent) {
-                      _page++;
-                      _findFood(_controller.text, loadMore: true);
-                    }
-                    return false;
-                  },
-                  child: ListView.builder(
-                    itemCount:
-                    infoFood.length + (isLoadingMore ? 1 : 0),
-                    itemBuilder: (context, index) {
-                      if (index == infoFood.length) {
-                        return Center(
-                          child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: CircularProgressIndicator(),
+                    isLoading
+                        ? Center(child: CircularProgressIndicator(color: Colors.green))
+                        : NotificationListener<ScrollNotification>(
+                          onNotification: (scrollInfo) {
+                            if (!isLoadingMore && hasMore && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
+                              _page++;
+                              _findFood(_controller.text, loadMore: true);
+                            }
+                            return false;
+                          },
+                          child: ListView.builder(
+                            itemCount: infoFood.length + (isLoadingMore ? 1 : 0),
+                            itemBuilder: (context, index) {
+                              if (index == infoFood.length) {
+                                return Center(child: Padding(padding: EdgeInsets.all(8), child: CircularProgressIndicator()));
+                              }
+                              final food = infoFood[index];
+                              return ItemFood(
+                                infoFood: food,
+                                onReload: () {
+                                  if (_controller.text.trim().isNotEmpty) {
+                                    _findFood(_controller.text.trim());
+                                  } else {
+                                    _findFood("");
+                                  }
+                                },
+                              );
+                            },
                           ),
-                        );
-                      }
-                      final food = infoFood[index];
-                      return ItemFood(infoFood: food,
-                      );
-                    },
-                  ),
-                ),
+                        ),
               ),
               Container(
                 decoration: BoxDecoration(
@@ -152,16 +150,13 @@ class _FoodFragState extends State<FoodFrag> {
                                 if (_debounce?.isActive ?? false) {
                                   _debounce!.cancel();
                                 }
-                                _debounce = Timer(
-                                  const Duration(milliseconds: 300),
-                                      () {
-                                    if (value.isEmpty) {
-                                      setState(() => suggestions = []);
-                                    } else {
-                                      _findSimilarFood(value);
-                                    }
-                                  },
-                                );
+                                _debounce = Timer(const Duration(milliseconds: 200), () {
+                                  if (value.isEmpty) {
+                                    setState(() => suggestions = []);
+                                  } else {
+                                    _findSimilarFood(value);
+                                  }
+                                });
                               },
                               decoration: InputDecoration(
                                 hintText: 'Tìm kiếm, lọc nguyên liệu',
@@ -180,15 +175,7 @@ class _FoodFragState extends State<FoodFrag> {
                             _focusNode.unfocus();
                             _findFood(_controller.text);
                           },
-                          icon: Icon(
-                            Icons.search,
-                            color: Colors.black,
-                            size: 24,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: Icon(Icons.tune, color: Colors.black, size: 24),
+                          icon: Icon(Icons.search, color: Colors.black, size: 24),
                         ),
                       ],
                     ),
@@ -198,7 +185,17 @@ class _FoodFragState extends State<FoodFrag> {
                         physics: ClampingScrollPhysics(),
                         itemCount: suggestions.length,
                         itemBuilder: (context, index) {
-                          return ItemSuggestion(text: suggestions[index]);
+                          return ItemSuggestion(
+                            text: suggestions[index],
+                            onTap: () {
+                              setState(() {
+                                _controller.text = suggestions[index];
+                                suggestions.clear();
+                              });
+                              _focusNode.unfocus();
+                              _findFood(_controller.text);
+                            },
+                          );
                         },
                       ),
                     ),

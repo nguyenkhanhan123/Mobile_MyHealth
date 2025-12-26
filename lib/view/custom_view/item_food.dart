@@ -1,14 +1,13 @@
+import 'package:al_datn_my_health/view/act/admin/fix_food_act.dart';
 import 'package:flutter/material.dart';
 
 import '../../model/res/list_food_res.dart';
 
 class ItemFood extends StatelessWidget {
   final InfoFood infoFood;
+  final VoidCallback onReload;
 
-  const ItemFood({
-    super.key,
-    required this.infoFood
-  });
+  const ItemFood({super.key, required this.infoFood, required this.onReload});
 
   @override
   Widget build(BuildContext context) {
@@ -61,14 +60,15 @@ class ItemFood extends StatelessWidget {
                               fontFamily: "SVN_Comic",
                             ),
                           ),
-                          WidgetSpan(
-                            child: Icon(
-                              Icons.check_circle,
-                              color: Colors.blue,
-                              size: 12,
+                          if (infoFood.isConfirm == 1)
+                            WidgetSpan(
+                              child: Icon(
+                                Icons.check_circle,
+                                color: Colors.blue,
+                                size: 12,
+                              ),
+                              alignment: PlaceholderAlignment.middle,
                             ),
-                            alignment: PlaceholderAlignment.middle,
-                          ),
                         ],
                       ),
                     ),
@@ -84,7 +84,17 @@ class ItemFood extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () async {
+                  final isReload = await Navigator.push<bool>(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => FixFoodAct(id: infoFood.id),
+                    ),
+                  );
+                  if (isReload == true) {
+                    onReload();
+                  }
+                },
                 icon: Icon(
                   Icons.edit_note_sharp,
                   size: 28,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 class ItemMessage extends StatelessWidget {
   final String text;
@@ -8,9 +9,15 @@ class ItemMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextStyle baseStyle = const TextStyle(
+      color: Colors.black,
+      fontSize: 18,
+      fontFamily: "SVN_Comic",
+    );
+
     return isAI
         ? Container(
-      margin: const EdgeInsets.only(right: 75),
+      margin: const EdgeInsets.only(right: 25),
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,22 +39,27 @@ class ItemMessage extends StatelessWidget {
                 color: Colors.blue.shade100,
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Text(
-                text,
-                softWrap: true,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontFamily: "SVN_Comic",
+              // --- THAY ĐỔI Ở ĐÂY ---
+              child: MarkdownBody(
+                data: text,
+                selectable: true, // Cho phép copy text
+                // Cấu hình style để giống với thiết kế cũ (font SVN_Comic)
+                styleSheet: MarkdownStyleSheet(
+                  p: baseStyle, // Text thường
+                  strong: baseStyle.copyWith(fontWeight: FontWeight.bold), // Text in đậm (**...**)
+                  em: baseStyle.copyWith(fontStyle: FontStyle.italic), // Text in nghiêng (*...*)
+                  blockSpacing: 8.0, // Khoảng cách giữa các đoạn
+                  listBullet: baseStyle, // Style cho dấu chấm đầu dòng
                 ),
               ),
+              // ---------------------
             ),
           ),
         ],
       ),
     )
         : Container(
-      margin: const EdgeInsets.only(left: 75),
+      margin: const EdgeInsets.only(left: 25),
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,15 +73,12 @@ class ItemMessage extends StatelessWidget {
                 color: Colors.green.shade100,
                 borderRadius: BorderRadius.circular(20),
               ),
+              // Tin nhắn của User thường không cần Markdown, giữ nguyên Text để canh lề phải dễ hơn
               child: Text(
                 text,
                 softWrap: true,
                 textAlign: TextAlign.end,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                  fontFamily: "SVN_Comic",
-                ),
+                style: baseStyle,
               ),
             ),
           ),
@@ -80,7 +89,8 @@ class ItemMessage extends StatelessWidget {
               shape: BoxShape.circle,
               border: Border.all(color: Colors.blue, width: 2),
             ),
-            child: const Icon(Icons.person, color: Colors.black, size: 24),
+            child:
+            const Icon(Icons.person, color: Colors.black, size: 24),
           ),
         ],
       ),

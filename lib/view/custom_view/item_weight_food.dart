@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../model/res/info_dish_res.dart';
 
 class ItemWeightFood extends StatefulWidget {
-  final Ingredient ingredient;
+  final BasicIngredient ingredient;
   final VoidCallback onRemove;
   const ItemWeightFood({
     super.key,

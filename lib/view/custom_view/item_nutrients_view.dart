@@ -64,7 +64,7 @@ class _ItemNutrientsViewState extends State<ItemNutrientsView> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    widget.itemNutrients.used.toString(),
+                    formatNumber(widget.itemNutrients.used),
                     style: TextStyle(
                       color: color,
                       fontSize: 16,
@@ -73,7 +73,7 @@ class _ItemNutrientsViewState extends State<ItemNutrientsView> {
                     ),
                   ),
                   Text(
-                    "/${widget.itemNutrients.total}${widget.itemNutrients.unit}",
+                    "/${formatNumber(widget.itemNutrients.total)}${widget.itemNutrients.unit}",
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
@@ -85,16 +85,29 @@ class _ItemNutrientsViewState extends State<ItemNutrientsView> {
             ],
           ),
           Text(
-            "Còn lại ${widget.itemNutrients.total - widget.itemNutrients.used}${widget.itemNutrients.unit}",
-            style: TextStyle(
+            widget.itemNutrients.used > widget.itemNutrients.total
+                ? "Vượt quá ${formatNumber(widget.itemNutrients.used - widget.itemNutrients.total)}${widget.itemNutrients.unit}"
+                : "Còn lại ${formatNumber(widget.itemNutrients.total - widget.itemNutrients.used)}${widget.itemNutrients.unit}",
+            style: const TextStyle(
               color: Colors.black,
               fontSize: 16,
               fontFamily: "SVN_Comic",
             ),
-          ),
+          )
+          ,
         ],
       ),
     );
+  }
+
+  String formatNumber(num value) {
+    if (value < 1) {
+      return value.toStringAsFixed(2);
+    } else if (value < 100) {
+      return value.toStringAsFixed(1);
+    } else {
+      return value.toStringAsFixed(0);
+    }
   }
 
   Color getWarmColor() {

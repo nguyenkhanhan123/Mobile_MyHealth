@@ -16,7 +16,7 @@ class AddDishAct extends StatefulWidget {
 
 class _AddDishActState extends State<AddDishAct> {
   final _formKey = GlobalKey<FormState>();
-  List<Ingredient> ingredients = [];
+  List<BasicIngredient> ingredients = [];
   List<Hashtag> selectedHashtags = [];
 
   final TextEditingController _nameDishController = TextEditingController();
@@ -51,6 +51,8 @@ class _AddDishActState extends State<AddDishAct> {
                   padding: EdgeInsets.all(5),
                   child: Text(
                     'Thêm món',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: "SVN_SAF",
@@ -211,18 +213,20 @@ class _AddDishActState extends State<AddDishAct> {
                           },
                         ),
                         SizedBox(height: 15),
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                        Wrap(
+                          alignment: WrapAlignment.center,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          spacing: 8,
+                          runSpacing: 4,
                           children: [
                             Padding(
                               padding: EdgeInsets.symmetric(
-                                vertical: 8,
+                                vertical: 12,
                                 horizontal: 8,
                               ),
                               child: Text(
                                 "Danh sách nguyên liệu",
+                                maxLines: 1,
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 21,
@@ -231,72 +235,73 @@ class _AddDishActState extends State<AddDishAct> {
                                 ),
                               ),
                             ),
-                            Spacer(),
                             Padding(
-                              padding: EdgeInsets.symmetric(
-                                vertical: 8,
-                                horizontal: 8,
-                              ),
-                              child: TextButton.icon(
-                                onPressed: () async {
-                                  final result =
-                                      await Navigator.push<Ingredient>(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => ChooseFoodAct(),
-                                        ),
-                                      );
-
-                                  if (result != null) {
-                                    setState(() {
-                                      final index = ingredients.indexWhere(
-                                        (f) =>
-                                            f.ingredientId ==
-                                            result.ingredientId,
-                                      );
-                                      if (index == -1) {
-                                        ingredients.add(result);
-                                      } else {
-                                        final old = ingredients[index];
-                                        ingredients[index] = Ingredient(
-                                          ingredientId: old.ingredientId,
-                                          name: old.name,
-                                          weight: old.weight + result.weight,
-                                          unit: old.unit,
-                                          thumbnail: old.thumbnail,
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 8,
+                                  horizontal: 4,
+                                ),
+                                child: TextButton.icon(
+                                  onPressed: () async {
+                                    final result =
+                                        await Navigator.push<BasicIngredient>(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (context) => ChooseFoodAct(),
+                                          ),
                                         );
-                                      }
-                                    });
-                                  }
-                                },
-                                style: TextButton.styleFrom(
-                                  foregroundColor: Colors.blue,
-                                  backgroundColor: Color.fromARGB(
-                                    255,
-                                    215,
-                                    236,
-                                    255,
+
+                                    if (result != null) {
+                                      setState(() {
+                                        final index = ingredients.indexWhere(
+                                          (f) =>
+                                              f.ingredientId ==
+                                              result.ingredientId,
+                                        );
+                                        if (index == -1) {
+                                          ingredients.add(result);
+                                        } else {
+                                          final old = ingredients[index];
+                                          ingredients[index] = BasicIngredient(
+                                            ingredientId: old.ingredientId,
+                                            name: old.name,
+                                            weight: old.weight + result.weight,
+                                            unit: old.unit,
+                                            thumbnail: old.thumbnail,
+                                          );
+                                        }
+                                      });
+                                    }
+                                  },
+                                  style: TextButton.styleFrom(
+                                    foregroundColor: Colors.blue,
+                                    backgroundColor: Color.fromARGB(
+                                      255,
+                                      215,
+                                      236,
+                                      255,
+                                    ),
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 6,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18),
+                                    ),
                                   ),
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 8,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18),
-                                  ),
-                                ),
-                                icon: Icon(Icons.add, size: 16),
-                                label: Text(
-                                  "Chọn nguyên liệu",
-                                  textAlign: TextAlign.center,
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: "SVN_Comic",
+                                  icon: Icon(Icons.add, size: 16),
+                                  label: Text(
+                                    "Chọn nguyên liệu",
+                                    textAlign: TextAlign.center,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: "SVN_Comic",
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
                           ],
                         ),
                         SizedBox(height: 15),
@@ -321,14 +326,15 @@ class _AddDishActState extends State<AddDishAct> {
                           },
                         ),
                         SizedBox(height: 15),
-                        Row(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                        Wrap(
+                          alignment: WrapAlignment.center,
+                          crossAxisAlignment: WrapCrossAlignment.center,
+                          spacing: 8,
+                          runSpacing: 4,
                           children: [
                             Padding(
                               padding: EdgeInsets.symmetric(
-                                vertical: 8,
+                                vertical: 12,
                                 horizontal: 8,
                               ),
                               child: Text(
@@ -341,54 +347,55 @@ class _AddDishActState extends State<AddDishAct> {
                                 ),
                               ),
                             ),
-                            Spacer(),
                             Padding(
-                              padding: EdgeInsets.symmetric(
-                                vertical: 8,
-                                horizontal: 8,
-                              ),
-                              child: TextButton.icon(
-                                onPressed: () async {
-                                  final result =
-                                      await showDialog<List<Hashtag>>(
-                                        context: context,
-                                        builder:
-                                            (context) => const HashtagDialog(),
-                                      );
-                                  if (result != null) {
-                                    setState(() {
-                                      selectedHashtags = result;
-                                    });
-                                  }
-                                },
-                                style: TextButton.styleFrom(
-                                  foregroundColor: Colors.blue,
-                                  backgroundColor: Color.fromARGB(
-                                    255,
-                                    215,
-                                    236,
-                                    255,
+                                padding: EdgeInsets.symmetric(
+                                  vertical: 8,
+                                  horizontal: 4,
+                                ),
+                                child: TextButton.icon(
+                                  onPressed: () async {
+                                    final result =
+                                        await showDialog<List<Hashtag>>(
+                                          context: context,
+                                          builder:
+                                              (context) =>
+                                                  const HashtagDialog(),
+                                        );
+                                    if (result != null) {
+                                      setState(() {
+                                        selectedHashtags = result;
+                                      });
+                                    }
+                                  },
+                                  style: TextButton.styleFrom(
+                                    foregroundColor: Colors.blue,
+                                    backgroundColor: Color.fromARGB(
+                                      255,
+                                      215,
+                                      236,
+                                      255,
+                                    ),
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 8,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18),
+                                    ),
                                   ),
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 8,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(18),
+                                  icon: Icon(Icons.add, size: 16),
+                                  label: Text(
+                                    "Chọn hashtag",
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: "SVN_Comic",
+                                    ),
                                   ),
                                 ),
-                                icon: Icon(Icons.add, size: 16),
-                                label: Text(
-                                  "Chọn hashtag",
-                                  textAlign: TextAlign.center,
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: "SVN_Comic",
-                                  ),
-                                ),
                               ),
-                            ),
                           ],
                         ),
                         SizedBox(height: 15),
@@ -425,7 +432,7 @@ class _AddDishActState extends State<AddDishAct> {
                         TextButton.icon(
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              final isOke=_addDish(
+                              final isOke = _addDish(
                                 _nameDishController.text,
                                 _thumnailController.text,
                                 _descriptionController.text,
@@ -434,7 +441,7 @@ class _AddDishActState extends State<AddDishAct> {
                                 ingredients,
                                 selectedHashtags,
                               );
-                              if(await isOke) {
+                              if (await isOke) {
                                 Navigator.of(context).pop(true);
                               }
                             }
@@ -480,7 +487,7 @@ class _AddDishActState extends State<AddDishAct> {
     String description,
     String preparationSteps,
     String cookingSteps,
-    List<Ingredient> ingredients,
+    List<BasicIngredient> ingredients,
     List<Hashtag> hashtagId,
   ) async {
     List<int> hashtagIds = selectedHashtags.map((h) => h.id).toList();

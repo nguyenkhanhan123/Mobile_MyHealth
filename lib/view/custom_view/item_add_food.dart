@@ -73,6 +73,7 @@ class _ItemAddFoodState extends State<ItemAddFood> {
                               fontFamily: "SVN_Comic",
                             ),
                           ),
+                          if(widget.infoFood.isConfirm==1)
                           WidgetSpan(
                             child: Icon(
                               Icons.check_circle,
@@ -169,7 +170,7 @@ class _ItemAddFoodState extends State<ItemAddFood> {
                                     double.tryParse(_controller.text.trim()) ??
                                     0;
                                 Navigator.pop(context);
-                                Navigator.pop(context, Ingredient(
+                                Navigator.pop(context, BasicIngredient(
                                     ingredientId: widget.infoFood.id,
                                     weight: value,
                                   thumbnail: widget.infoFood.thumbnail,

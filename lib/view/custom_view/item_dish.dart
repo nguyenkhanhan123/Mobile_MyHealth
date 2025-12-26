@@ -59,6 +59,7 @@ class ItemDish extends StatelessWidget {
                               fontFamily: "SVN_Comic",
                             ),
                           ),
+                          if(infoDish.isConfirm==1)
                           WidgetSpan(
                             child: Icon(
                               Icons.check_circle,

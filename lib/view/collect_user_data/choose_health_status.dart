@@ -7,7 +7,8 @@ import '../../model/user_info.dart';
 
 class ChooseHealthStatus extends StatefulWidget {
   final UserInfo userInfo;
-  const ChooseHealthStatus({super.key, required this.userInfo});
+  final int? idUserInfo;
+  const ChooseHealthStatus({super.key, required this.userInfo, this.idUserInfo});
 
   @override
   _ChooseHealthStatusState createState() {
@@ -33,19 +34,27 @@ class _ChooseHealthStatusState extends State<ChooseHealthStatus> {
 
   Set<int> selectedIds = {};
 
+  void toggleSelection(int id) {
+    setState(() {
+      if (id == 1) {
+        selectedIds.clear();
+        selectedIds.add(1);
+      } else {
+        selectedIds.remove(1);
+        if (selectedIds.contains(id)) {
+          selectedIds.remove(id);
+        } else {
+          selectedIds.add(id);
+        }
+      }
+    });
+  }
+
   Widget buildItem(HealthStatus item) {
     bool isSelected = selectedIds.contains(item.id);
 
     return InkWell(
-      onTap: () {
-        setState(() {
-          if (isSelected) {
-            selectedIds.remove(item.id);
-          } else {
-            selectedIds.add(item.id);
-          }
-        });
-      },
+      onTap: () => toggleSelection(item.id),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
         child: Row(
@@ -53,27 +62,13 @@ class _ChooseHealthStatusState extends State<ChooseHealthStatus> {
           children: [
             Checkbox(
               value: isSelected,
-              onChanged: (bool? value) {
-                setState(() {
-                  if (value == true) {
-                    if (item.id == 1) {
-                      selectedIds.clear();
-                      selectedIds.add(1);
-                    } else {
-                      selectedIds.remove(1);
-                      selectedIds.add(item.id);
-                    }
-                  } else {
-                    selectedIds.remove(item.id);
-                  }
-                });
-              },
+              onChanged: (_) => toggleSelection(item.id),
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             Expanded(
               child: Text(
                 item.title,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 22,
                   fontFamily: "SVN_Comic",
@@ -88,9 +83,11 @@ class _ChooseHealthStatusState extends State<ChooseHealthStatus> {
 
   @override
   Widget build(BuildContext context) {
+    const double itemHeight = 65;
+
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(90),
+        preferredSize: const Size.fromHeight(90),
         child: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
@@ -98,16 +95,16 @@ class _ChooseHealthStatusState extends State<ChooseHealthStatus> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              LinearProgressIndicator(
+              const LinearProgressIndicator(
                 color: Color.fromARGB(255, 57, 206, 41),
                 backgroundColor: Color.fromARGB(255, 215, 236, 255),
                 value: 11 / 12,
                 minHeight: 6,
                 borderRadius: BorderRadius.all(Radius.circular(90)),
               ),
-              SizedBox(height: 4),
+              const SizedBox(height: 4),
               RichText(
-                text: TextSpan(
+                text: const TextSpan(
                   children: [
                     TextSpan(
                       text: "My",
@@ -132,83 +129,94 @@ class _ChooseHealthStatusState extends State<ChooseHealthStatus> {
           ),
         ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(flex: 1, child: Image.asset('assets/images/ic_doctor.png')),
-          Container(
-            margin: EdgeInsets.all(25),
-            child: Text(
-              'Bạn có đang bị bệnh nào không?',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 28,
-                fontFamily: "SVN_Comic",
-                fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/images/ic_doctor.png',
+              width: 165,
+              height: 165,
+            ),
+            Container(
+              margin: const EdgeInsets.all(25),
+              child: const Text(
+                'Bạn có đang bị bệnh nào không?',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 28,
+                  fontFamily: "SVN_Comic",
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          Expanded(
-            flex: 3,
-            child: ListView(
-              children: items.map((item) => buildItem(item)).toList(),
+            SizedBox(
+              height: itemHeight * 4,
+              child: ListView.builder(
+                itemExtent: itemHeight,
+                itemCount: items.length,
+                itemBuilder: (context, index) {
+                  return buildItem(items[index]);
+                },
+              ),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 20, bottom: 40),
-            child: Align(
-              alignment: Alignment.center,
-              child: TextButton.icon(
-                onPressed:
-                    selectedIds.isEmpty
-                        ? () {
-                          Fluttertoast.showToast(
-                            msg: "Vui lòng chọn 1 mục!",
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.BOTTOM,
-                            backgroundColor: Colors.black87,
-                            textColor: Colors.white,
-                            fontSize: 16.0,
-                          );
-                        }
-                        : () {
-                          widget.userInfo.healthStatusId = selectedIds.toList();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder:
-                                  (context) =>
-                                      ChooseFoodMode(userInfo: widget.userInfo),
-                            ),
-                          );
-                        },
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.green,
-                  padding: EdgeInsets.symmetric(horizontal: 35, vertical: 9),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18),
+
+            Container(
+              margin: const EdgeInsets.only(top: 20, bottom: 40),
+              child: Align(
+                alignment: Alignment.center,
+                child: TextButton.icon(
+                  onPressed: selectedIds.isEmpty
+                      ? () {
+                    Fluttertoast.showToast(
+                      msg: "Vui lòng chọn 1 mục!",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.black87,
+                      textColor: Colors.white,
+                      fontSize: 16.0,
+                    );
+                  }
+                      : () {
+                    widget.userInfo.healthStatusId =
+                        selectedIds.toList();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            ChooseFoodMode(userInfo: widget.userInfo, idUserInfo: widget.idUserInfo),
+                      ),
+                    );
+                  },
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.green,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 35, vertical: 9),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
                   ),
-                ),
-                icon: Icon(
-                  Icons.subdirectory_arrow_right_outlined,
-                  size: 24,
-                  color: Colors.white,
-                ),
-                label: Text(
-                  'Tiếp tục',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
+                  icon: const Icon(
+                    Icons.subdirectory_arrow_right_outlined,
+                    size: 24,
                     color: Colors.white,
-                    fontSize: 22,
-                    fontFamily: "SVN_Comic",
+                  ),
+                  label: const Text(
+                    'Tiếp tục',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontFamily: "SVN_Comic",
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

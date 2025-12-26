@@ -1,8 +1,8 @@
 class ItemNutrients {
   final String name;
   final String unit;
-  final int used;
-  final int total;
+  final double used;
+  final double total;
 
   ItemNutrients({
     required this.name,

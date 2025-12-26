@@ -2,16 +2,22 @@ import 'package:al_datn_my_health/model/req/account_req.dart';
 import 'package:al_datn_my_health/model/req/add_dish_req.dart';
 import 'package:al_datn_my_health/model/req/add_drink_req.dart';
 import 'package:al_datn_my_health/model/req/add_exercise_req.dart';
+import 'package:al_datn_my_health/model/req/add_ingredient_req.dart';
 import 'package:al_datn_my_health/model/req/add_meal_req.dart';
+import 'package:al_datn_my_health/model/req/add_notification_req.dart';
 import 'package:al_datn_my_health/model/req/get_kcal_exercise_req.dart';
 import 'package:al_datn_my_health/model/req/get_nutri_meal_req.dart';
+import 'package:al_datn_my_health/model/req/get_total_water_req.dart';
 import 'package:al_datn_my_health/model/req/search_req.dart';
 import 'package:al_datn_my_health/model/req/stat_drink_in_day_req.dart';
 import 'package:al_datn_my_health/model/res/add_dish_res.dart';
 import 'package:al_datn_my_health/model/res/add_drink_res.dart';
 import 'package:al_datn_my_health/model/res/add_exercise_res.dart';
+import 'package:al_datn_my_health/model/res/add_notification_res.dart';
 import 'package:al_datn_my_health/model/res/create_user_info_res.dart';
 import 'package:al_datn_my_health/model/res/get_nutri_meal_res.dart';
+import 'package:al_datn_my_health/model/res/get_required_index_res.dart';
+import 'package:al_datn_my_health/model/res/get_total_water_res.dart';
 import 'package:al_datn_my_health/model/res/list_dish_res.dart';
 import 'package:al_datn_my_health/model/res/list_food_res.dart';
 import 'package:al_datn_my_health/model/res/list_keyword_res.dart';
@@ -22,29 +28,31 @@ import 'package:dio/dio.dart';
 
 import '../model/req/stat_exercise_in_day_req.dart';
 import '../model/req/stat_meal_in_day_req.dart';
+import '../model/res/add_ingredient_res.dart';
 import '../model/res/add_meal_res.dart';
 import '../model/res/delete_drink_of_user_res.dart';
 import '../model/res/delete_exercise_of_user_res.dart';
 import '../model/res/delete_meal_of_user_res.dart';
 import '../model/res/get_kcal_exercise_res.dart';
+import '../model/res/get_notification_res.dart';
+import '../model/res/get_user_info_res.dart';
 import '../model/res/info_dish_res.dart';
+import '../model/res/info_ingredient_res.dart';
 import '../model/res/list_exercise_res.dart';
 import '../model/res/login_res.dart';
 import '../model/res/register_res.dart';
 import '../model/res/stat_exercise_in_day_res.dart';
 import '../model/res/update_dish_res.dart';
+import '../model/res/update_ingredient_res.dart';
+import '../model/res/update_status_res.dart';
+import '../model/res/update_userinfo_res.dart';
 
 class SeverApi {
   final Dio _dio;
 
   SeverApi()
-    : _dio = Dio(
-        BaseOptions(
-          baseUrl: 'http://192.168.1.8:5000/',
-          connectTimeout: Duration(seconds: 10),
-          receiveTimeout: Duration(seconds: 10),
-        ),
-      );
+    : _dio = Dio(BaseOptions(baseUrl: 'http://192.168.1.44:5000/', connectTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 10)));
 
   Future<RegisterRes?> registerAccount(AccountReq req) async {
     try {
@@ -127,10 +135,28 @@ class SeverApi {
     }
   }
 
+  Future<UpdateUserinfoRes?> updateUserInfo(UserInfo req, int id) async {
+    try {
+      final response = await _dio.patch('update_userinfo', queryParameters: {"id": id}, data: req.toMap());
+      return UpdateUserinfoRes.fromJson(response.data);
+    } catch (e) {
+      return null;
+    }
+  }
+
   Future<AddDishRes?> addDish(AddDishReq req) async {
     try {
       final response = await _dio.post('add_dish', data: req.toMap());
       return AddDishRes.fromJson(response.data);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<AddIngredientRes?> addIngredient(AddIngredientReq req) async {
+    try {
+      final response = await _dio.post('add_ingredient', data: req.toMap());
+      return AddIngredientRes.fromJson(response.data);
     } catch (e) {
       return null;
     }
@@ -158,6 +184,15 @@ class SeverApi {
     try {
       final response = await _dio.post('add_exercise', data: req.toMap());
       return AddExerciseRes.fromJson(response.data);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<AddNotificationRes?> addNotification(AddNotificationReq req) async {
+    try {
+      final response = await _dio.post('add_notification', data: req.toMap());
+      return AddNotificationRes.fromJson(response.data);
     } catch (e) {
       return null;
     }
@@ -244,10 +279,82 @@ class SeverApi {
     }
   }
 
-  Future<UpdateDishRes?> updateDish(int id,AddDishReq req) async {
+  Future<InfoDishRes?> infoDish2(String name) async {
     try {
-      final response = await _dio.patch('update_dish',queryParameters: {"id": id}, data: req.toMap());
+      final response = await _dio.get('info_dish2', queryParameters: {"name": name});
+      return InfoDishRes.fromJson(response.data);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<UpdateDishRes?> updateDish(int id, AddDishReq req) async {
+    try {
+      final response = await _dio.patch('update_dish', queryParameters: {"id": id}, data: req.toMap());
       return UpdateDishRes.fromJson(response.data);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<UpdateIngredientRes?> updateIngredient(Ingredient req) async {
+    try {
+      final response = await _dio.patch('update_ingredient', data: req.toMap());
+      return UpdateIngredientRes.fromJson(response.data);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<GetRequiredIndexRes?> getRequiredIndexById(int id) async {
+    try {
+      final response = await _dio.get('required_index', queryParameters: {"id": id});
+      return GetRequiredIndexRes.fromJson(response.data);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<GetTotalWaterRes?> getTotalWater(GetTotalWaterReq req) async {
+    try {
+      final response = await _dio.get('total_water', queryParameters: req.toMap());
+      return GetTotalWaterRes.fromJson(response.data);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<InfoIngredientRes?> infoIngredient(int id) async {
+    try {
+      final response = await _dio.get('info_ingredient', queryParameters: {"id": id});
+      return InfoIngredientRes.fromJson(response.data);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<GetUserInfoRes?> getUserInfoById(int id) async {
+    try {
+      final response = await _dio.get('get_user_info', queryParameters: {"id": id});
+      return GetUserInfoRes.fromJson(response.data);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<GetNotificationsRes?> getNotificationsBySenderId(int id) async {
+    try {
+      final response = await _dio.get('get_notification', queryParameters: {"id": id});
+      return GetNotificationsRes.fromJson(response.data);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<UpdateStatusRes?> updateStatus(int id) async {
+    try {
+      final response = await _dio.patch('update_status', queryParameters: {"id": id});
+      return UpdateStatusRes.fromJson(response.data);
     } catch (e) {
       return null;
     }

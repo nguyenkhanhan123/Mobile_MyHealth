@@ -18,11 +18,24 @@ class AddExerciseSchedule extends StatefulWidget {
 class _AddExerciseScheduleState extends State<AddExerciseSchedule> {
   List<InfoExerciseInDay> listItems = [];
   bool isReset = false;
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    _loadData();
+    _loadAllData();
+  }
+
+  Future<void> _loadAllData() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    await _loadData();
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   Future<void> _loadData() async {
@@ -87,6 +100,8 @@ class _AddExerciseScheduleState extends State<AddExerciseSchedule> {
                       padding: EdgeInsets.all(5),
                       child: Text(
                         'Ghi lại bài tập',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         textAlign: TextAlign.start,
                         style: TextStyle(
                           fontFamily: "SVN_SAF",
@@ -120,45 +135,58 @@ class _AddExerciseScheduleState extends State<AddExerciseSchedule> {
               Container(height: 1, color: Colors.green),
               Expanded(
                 child:
-                    listItems.isEmpty
-                        ? Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.all(15),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image.asset('assets/images/ic_exercise_time.png'),
-                              Text(
-                                'It\'s exercise time',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontFamily: "SVN_SAF",
-                                  fontSize: 24,
-                                  color: Colors.green,
+                    isLoading
+                        ? Center(
+                          child: CircularProgressIndicator(color: Colors.green),
+                        )
+                        : (listItems.isEmpty
+                            ? SingleChildScrollView(
+                              child: Container(
+                                alignment: Alignment.center,
+                                margin: EdgeInsets.symmetric(
+                                  vertical: 45,
+                                  horizontal: 15,
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/ic_exercise_time.png',
+                                    ),
+                                    Text(
+                                      'It\'s exercise time',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontFamily: "SVN_SAF",
+                                        fontSize: 24,
+                                        color: Colors.green,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
-                        )
-                        : ListView.builder(
-                          itemCount: listItems.length,
-                          itemBuilder: (context, index) {
-                            return ItemExerciseInDay(
-                              infoExerciseInDay: listItems[index],
-                              onDelete: () async {
-                                final success = await _delete(listItems[index].id);
-                                if (success) {
-                                  setState(() {
-                                    listItems.removeAt(index);
-                                  });
-                                  isReset = true;
-                                }
+                            )
+                            : ListView.builder(
+                              itemCount: listItems.length,
+                              itemBuilder: (context, index) {
+                                return ItemExerciseInDay(
+                                  infoExerciseInDay: listItems[index],
+                                  onDelete: () async {
+                                    final success = await _delete(
+                                      listItems[index].id,
+                                    );
+                                    if (success) {
+                                      setState(() {
+                                        listItems.removeAt(index);
+                                      });
+                                      isReset = true;
+                                    }
+                                  },
+                                );
                               },
-                            );
-                          },
-                        ),
+                            )),
               ),
             ],
           ),

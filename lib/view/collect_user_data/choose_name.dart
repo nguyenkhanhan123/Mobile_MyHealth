@@ -3,10 +3,10 @@ import 'package:al_datn_my_health/view/collect_user_data/choose_gender.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-
 class ChooseName extends StatefulWidget {
   final UserInfo userInfo;
   const ChooseName({super.key, required this.userInfo});
+
   @override
   _ChooseNameState createState() {
     return _ChooseNameState();
@@ -30,7 +30,7 @@ class _ChooseNameState extends State<ChooseName> {
               LinearProgressIndicator(
                 color: Color.fromARGB(255, 57, 206, 41),
                 backgroundColor: Color.fromARGB(255, 215, 236, 255),
-                value: 2/12,
+                value: 2 / 12,
                 minHeight: 6,
                 borderRadius: BorderRadius.all(Radius.circular(90)),
               ),
@@ -61,28 +61,27 @@ class _ChooseNameState extends State<ChooseName> {
           ),
         ),
       ),
-      body: Container(
-        margin: EdgeInsets.symmetric(horizontal: 15),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(flex: 1, child: Image.asset('assets/images/ic_face.png')),
-            Container(
-              margin: EdgeInsets.all(25),
-              child: Text(
-                'Chào mừng đến với ứng dụng của chúng tôi, bạn tên là gì?',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 28,
-                  fontFamily: "SVN_Comic",
-                  fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 15),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/images/ic_face.png', width: 165, height: 165),
+              Container(
+                margin: EdgeInsets.all(25),
+                child: Text(
+                  'Chào mừng đến với ứng dụng của chúng tôi, bạn tên là gì?',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 28,
+                    fontFamily: "SVN_Comic",
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Container(
+              Container(
                 margin: EdgeInsets.symmetric(horizontal: 15),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -90,7 +89,7 @@ class _ChooseNameState extends State<ChooseName> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Tên tôi là',
+                      'Tên bạn là',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.black,
@@ -128,56 +127,64 @@ class _ChooseNameState extends State<ChooseName> {
                   ],
                 ),
               ),
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 20, bottom: 40),
-              child: Align(
-                alignment: Alignment.center,
-                child: TextButton.icon(
-                  onPressed: () {
-                    if(_nameController.text.trim().isNotEmpty){
-                      widget.userInfo.fullName=_nameController.text;
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ChooseGender(userInfo: widget.userInfo)),
-                      );
-                    }else{
-                      Fluttertoast.showToast(
-                        msg: "Vui lòng điền tên của bạn!",
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        backgroundColor: Colors.black87,
-                        textColor: Colors.white,
-                        fontSize: 16.0,
-                      );
-                    }
-                  },
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.green,
-                    padding: EdgeInsets.symmetric(horizontal: 35, vertical: 9),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
+
+              Container(
+                margin: EdgeInsets.only(top: 20, bottom: 40),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: TextButton.icon(
+                    onPressed: () {
+                      if (_nameController.text.trim().isNotEmpty) {
+                        widget.userInfo.fullName = _nameController.text;
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder:
+                                (context) =>
+                                    ChooseGender(userInfo: widget.userInfo),
+                          ),
+                        );
+                      } else {
+                        Fluttertoast.showToast(
+                          msg: "Vui lòng điền tên của bạn!",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          backgroundColor: Colors.black87,
+                          textColor: Colors.white,
+                          fontSize: 16.0,
+                        );
+                      }
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.green,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 35,
+                        vertical: 9,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
                     ),
-                  ),
-                  icon: Icon(
-                    Icons.subdirectory_arrow_right_outlined,
-                    size: 24,
-                    color: Colors.white,
-                  ),
-                  label: Text(
-                    'Tiếp tục',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
+                    icon: Icon(
+                      Icons.subdirectory_arrow_right_outlined,
+                      size: 24,
                       color: Colors.white,
-                      fontSize: 22,
-                      fontFamily: "SVN_Comic",
+                    ),
+                    label: Text(
+                      'Tiếp tục',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontFamily: "SVN_Comic",
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

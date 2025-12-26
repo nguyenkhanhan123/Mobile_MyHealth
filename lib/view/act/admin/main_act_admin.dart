@@ -9,6 +9,8 @@ import 'package:al_datn_my_health/view/frag/client/home_frag.dart';
 import 'package:al_datn_my_health/view/frag/client/note_frag.dart';
 import 'package:flutter/material.dart';
 
+import '../../frag/admin/notification_frag.dart';
+
 class MainActAdmin extends StatefulWidget {
   @override
   _MainActAdminState createState() => _MainActAdminState();
@@ -24,7 +26,7 @@ class _MainActAdminState extends State<MainActAdmin> {
       case 1:
         return Center(child: FoodFrag());
       case 2:
-        return Center(child: Text("View3"));
+        return Center(child: NotificationFrag());
       default:
         return Container();
     }

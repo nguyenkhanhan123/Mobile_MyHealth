@@ -1,6 +1,7 @@
 import 'package:al_datn_my_health/common_utils.dart';
 import 'package:al_datn_my_health/model/req/add_meal_req.dart';
 import 'package:al_datn_my_health/model/res/list_dish_res.dart';
+import 'package:al_datn_my_health/view/act/client/detail_dish.dart';
 import 'package:al_datn_my_health/view/dialog/weight_dish_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -71,6 +72,7 @@ class ItemAddDish extends StatelessWidget {
                               fontFamily: "SVN_Comic",
                             ),
                           ),
+                          if(infoDish.isConfirm==1)
                           WidgetSpan(
                             child: Icon(
                               Icons.check_circle,
@@ -120,7 +122,9 @@ class ItemAddDish extends StatelessWidget {
                 icon: Icon(Icons.add, size: 28, color: Colors.black),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => DetailDishAct(id: infoDish.id)));
+                },
                 icon: Icon(
                   Icons.info_outline_rounded,
                   size: 28,
@@ -161,7 +165,7 @@ class ItemAddDish extends StatelessWidget {
       return true;
     } else {
       await Fluttertoast.showToast(
-        msg: "Chưa tể thêm món ăn hoặc kết nối không ổn định!",
+        msg: "Chưa thể thêm món ăn hoặc kết nối không ổn định!",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.black87,

@@ -25,7 +25,7 @@ class Dish {
   final String description;
   final String preparationSteps;
   final String cookingSteps;
-  final List<Ingredient> ingredients;
+  final List<BasicIngredient> ingredients;
   final List<Hashtag> hashtags;
 
   Dish({
@@ -50,7 +50,7 @@ class Dish {
       preparationSteps: json['preparationSteps'] as String,
       description: json['description'] as String,
       ingredients: (json['ingredients'] as List<dynamic>)
-          .map((e) => Ingredient.fromJson(e as Map<String, dynamic>))
+          .map((e) => BasicIngredient.fromJson(e as Map<String, dynamic>))
           .toList(),
       hashtags: (json['hashtags'] as List<dynamic>)
           .map((e) => Hashtag.fromJson(e as Map<String, dynamic>))
@@ -59,14 +59,14 @@ class Dish {
   }
 }
 
-class Ingredient {
+class BasicIngredient {
   final int ingredientId;
   final String name;
   final double weight;
   final String unit;
   final String thumbnail;
 
-  Ingredient({
+  BasicIngredient({
     required this.ingredientId,
     required this.name,
     required this.weight,
@@ -74,8 +74,8 @@ class Ingredient {
     required this.thumbnail,
   });
 
-  factory Ingredient.fromJson(Map<String, dynamic> json) {
-    return Ingredient(
+  factory BasicIngredient.fromJson(Map<String, dynamic> json) {
+    return BasicIngredient(
       ingredientId: json['ingredientId'] as int,
       name: json['name'] as String,
       weight: (json['weight'] as num).toDouble(),

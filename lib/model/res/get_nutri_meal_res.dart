@@ -19,10 +19,12 @@ class GetNutriMealRes {
 
 class NutriMeal {
   final double kcal;
+  final double totalCarbs;
   final double carbs;
   final double sugar;
   final double fiber;
   final double protein;
+  final double totalFats;
   final double saturatedFat;
   final double monounSaturatedFat;
   final double polyunSaturatedFat;
@@ -50,9 +52,11 @@ class NutriMeal {
   NutriMeal({
     required this.kcal,
     required this.carbs,
+    required this.totalCarbs,
     required this.sugar,
     required this.fiber,
     required this.protein,
+    required this.totalFats,
     required this.saturatedFat,
     required this.monounSaturatedFat,
     required this.polyunSaturatedFat,
@@ -82,9 +86,11 @@ class NutriMeal {
     return NutriMeal(
       kcal: (json['kcal'] as num?)?.toDouble() ?? 0.0,
       carbs: (json['carbs'] as num?)?.toDouble() ?? 0.0,
+      totalCarbs: (json['totalCarbs'] as num?)?.toDouble() ?? 0.0,
       sugar: (json['sugar'] as num?)?.toDouble() ?? 0.0,
       fiber: (json['fiber'] as num?)?.toDouble() ?? 0.0,
       protein: (json['protein'] as num?)?.toDouble() ?? 0.0,
+      totalFats: (json['totalFats'] as num?)?.toDouble() ?? 0.0,
       saturatedFat: (json['saturatedFat'] as num?)?.toDouble() ?? 0.0,
       monounSaturatedFat: (json['monounSaturatedFat'] as num?)?.toDouble() ?? 0.0,
       polyunSaturatedFat: (json['polyunSaturatedFat'] as num?)?.toDouble() ?? 0.0,

@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:numberpicker/numberpicker.dart';
 
 import '../../model/user_info.dart';
-import 'choose_weight.dart';
 
 class ChooseWeightTarget extends StatefulWidget {
   final UserInfo userInfo;
-  const ChooseWeightTarget({super.key, required this.userInfo});
+  final int? idUserInfo;
+  const ChooseWeightTarget({super.key, required this.userInfo, this.idUserInfo});
+
   @override
   _ChooseWeightTargetState createState() {
     return _ChooseWeightTargetState();
@@ -16,6 +17,40 @@ class ChooseWeightTarget extends StatefulWidget {
 
 class _ChooseWeightTargetState extends State<ChooseWeightTarget> {
   int _currentValue = 42;
+  double _currentBMI = 0;
+  int _currentFlex = 100;
+
+  @override
+  void initState() {
+    super.initState();
+    loadBMI(_currentValue);
+  }
+
+  void loadBMI(int currentValue) {
+    final _bmi =
+        _currentValue /
+        ((widget.userInfo.height! / 100) * (widget.userInfo.height! / 100));
+    int flex = 0;
+    if (_bmi < 18.5) {
+      flex = ((_bmi / 18.5) * 20).round();
+    } else if (_bmi >= 18.5 && _bmi < 23.0) {
+      flex = 20 + (((_bmi - 18.5) / (23.0 - 18.5)) * 20).round();
+    } else if (_bmi >= 23.0 && _bmi < 25.0) {
+      flex = 40 + (((_bmi - 23.0) / (25.0 - 23.0)) * 20).round();
+    } else if (_bmi >= 25.0 && _bmi < 30.0) {
+      flex = 60 + (((_bmi - 25.0) / (30.0 - 25.0)) * 20).round();
+    } else if (_bmi >= 30.0 && _bmi < 40.0) {
+      flex = 80 + (((_bmi - 30.0) / (40.0 - 30.0)) * 20).round();
+    } else if (_bmi >= 40.0) {
+      flex = 100;
+    }
+    setState(() {
+      _currentValue = currentValue;
+      _currentBMI = _bmi;
+      _currentFlex = flex;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +66,7 @@ class _ChooseWeightTargetState extends State<ChooseWeightTarget> {
               LinearProgressIndicator(
                 color: Color.fromARGB(255, 57, 206, 41),
                 backgroundColor: Color.fromARGB(255, 215, 236, 255),
-                value: 7/12,
+                value: 7 / 12,
                 minHeight: 6,
                 borderRadius: BorderRadius.all(Radius.circular(90)),
               ),
@@ -62,26 +97,25 @@ class _ChooseWeightTargetState extends State<ChooseWeightTarget> {
           ),
         ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(flex: 1, child: Image.asset('assets/images/ic_target.png')),
-          Container(
-            margin: EdgeInsets.all(15),
-            child: Text(
-              'Cân nặng mục tiêu mà bạn mong muốn là bao nhiêu?',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 28,
-                fontFamily: "SVN_Comic",
-                fontWeight: FontWeight.bold,
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('assets/images/ic_target.png', width: 165, height: 165),
+            Container(
+              margin: EdgeInsets.all(15),
+              child: Text(
+                'Cân nặng mục tiêu mà bạn mong muốn là bao nhiêu?',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 28,
+                  fontFamily: "SVN_Comic",
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-          ),
-          Expanded(
-            flex: 3,
-            child: Container(
+            Container(
               margin: EdgeInsets.symmetric(horizontal: 25),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -91,7 +125,7 @@ class _ChooseWeightTargetState extends State<ChooseWeightTarget> {
                   NumberPicker(
                     value: _currentValue,
                     minValue: 22,
-                    maxValue: 80,
+                    maxValue: 200,
                     step: 1,
                     itemWidth: 50,
                     itemCount: 5,
@@ -105,8 +139,13 @@ class _ChooseWeightTargetState extends State<ChooseWeightTarget> {
                       color: Colors.blue,
                       fontWeight: FontWeight.bold,
                     ),
-                    textStyle: const TextStyle(fontSize: 20, color: Colors.grey),
-                    onChanged: (value) => setState(() => _currentValue = value),
+                    textStyle: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.grey,
+                    ),
+                    onChanged: (value) {
+                      loadBMI(value);
+                    },
                   ),
                   Container(
                     margin: EdgeInsets.all(15),
@@ -121,9 +160,9 @@ class _ChooseWeightTargetState extends State<ChooseWeightTarget> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.all(15),
+                    margin: EdgeInsets.all(9),
                     child: Text(
-                      '24,0',
+                      _currentBMI.toStringAsFixed(1),
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.black,
@@ -212,7 +251,10 @@ class _ChooseWeightTargetState extends State<ChooseWeightTarget> {
                       ),
                       Row(
                         children: [
-                          Expanded(flex:1, child: SizedBox(width: 0)),
+                          Expanded(
+                            flex: _currentFlex,
+                            child: SizedBox(width: 0),
+                          ),
                           Center(
                             child: Icon(
                               Icons.circle,
@@ -220,12 +262,14 @@ class _ChooseWeightTargetState extends State<ChooseWeightTarget> {
                               color: Colors.black,
                             ),
                           ),
-                          Expanded(flex:0, child: SizedBox(width: 0))
+                          Expanded(
+                            flex: 100 - _currentFlex,
+                            child: SizedBox(width: 0),
+                          ),
                         ],
-                      )
+                      ),
                     ],
-                  )
-                  ,
+                  ),
                   SizedBox(height: 4),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -236,6 +280,7 @@ class _ChooseWeightTargetState extends State<ChooseWeightTarget> {
                         child: Text(
                           'Thiếu cân',
                           maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.black,
@@ -248,6 +293,7 @@ class _ChooseWeightTargetState extends State<ChooseWeightTarget> {
                         child: Text(
                           'Bình thường',
                           maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.black,
@@ -260,6 +306,7 @@ class _ChooseWeightTargetState extends State<ChooseWeightTarget> {
                         child: Text(
                           'Thừa cân',
                           maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.black,
@@ -272,6 +319,7 @@ class _ChooseWeightTargetState extends State<ChooseWeightTarget> {
                         child: Text(
                           'Béo phì',
                           maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.black,
@@ -284,6 +332,7 @@ class _ChooseWeightTargetState extends State<ChooseWeightTarget> {
                         child: Text(
                           'Béo phì nặng',
                           maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.red,
@@ -297,45 +346,49 @@ class _ChooseWeightTargetState extends State<ChooseWeightTarget> {
                 ],
               ),
             ),
-          ),
-          Container(
-            margin: EdgeInsets.only(top: 20, bottom: 40),
-            child: Align(
-              alignment: Alignment.center,
-              child: TextButton.icon(
-                onPressed: () {
-                  widget.userInfo.weightTarget=_currentValue;
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ChooseActivityLevel(userInfo: widget.userInfo)),
-                  );
-                },
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.green,
-                  padding: EdgeInsets.symmetric(horizontal: 35, vertical: 9),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18),
+            Container(
+              margin: EdgeInsets.only(top: 20, bottom: 40),
+              child: Align(
+                alignment: Alignment.center,
+                child: TextButton.icon(
+                  onPressed: () {
+                    widget.userInfo.weightTarget = _currentValue;
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (context) =>
+                                ChooseActivityLevel(userInfo: widget.userInfo,idUserInfo: widget.idUserInfo,),
+                      ),
+                    );
+                  },
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.green,
+                    padding: EdgeInsets.symmetric(horizontal: 35, vertical: 9),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
+                    ),
                   ),
-                ),
-                icon: Icon(
-                  Icons.subdirectory_arrow_right_outlined,
-                  size: 24,
-                  color: Colors.white,
-                ),
-                label: Text(
-                  'Tiếp tục',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
+                  icon: Icon(
+                    Icons.subdirectory_arrow_right_outlined,
+                    size: 24,
                     color: Colors.white,
-                    fontSize: 22,
-                    fontFamily: "SVN_Comic",
+                  ),
+                  label: Text(
+                    'Tiếp tục',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontFamily: "SVN_Comic",
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

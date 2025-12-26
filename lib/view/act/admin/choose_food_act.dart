@@ -63,7 +63,8 @@ class _ChooseFoodActState extends State<ChooseFoodAct> {
                     padding: EdgeInsets.all(5),
                     child: Text(
                       'Chọn nguyên liệu',
-                      textAlign: TextAlign.start,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontFamily: "SVN_SAF",
                         fontSize: 24,
@@ -149,7 +150,7 @@ class _ChooseFoodActState extends State<ChooseFoodAct> {
                                       _debounce!.cancel();
                                     }
                                     _debounce = Timer(
-                                      const Duration(milliseconds: 300),
+                                      const Duration(milliseconds: 200),
                                       () {
                                         if (value.isEmpty) {
                                           setState(() => suggestions = []);
@@ -182,14 +183,6 @@ class _ChooseFoodActState extends State<ChooseFoodAct> {
                                 size: 24,
                               ),
                             ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(
-                                Icons.tune,
-                                color: Colors.black,
-                                size: 24,
-                              ),
-                            ),
                           ],
                         ),
                         Flexible(
@@ -198,7 +191,17 @@ class _ChooseFoodActState extends State<ChooseFoodAct> {
                             physics: ClampingScrollPhysics(),
                             itemCount: suggestions.length,
                             itemBuilder: (context, index) {
-                              return ItemSuggestion(text: suggestions[index]);
+                              return ItemSuggestion(
+                                text: suggestions[index],
+                                  onTap: () {
+                                    setState(() {
+                                      _controller.text = suggestions[index];
+                                      suggestions.clear();
+                                    });
+                                    _focusNode.unfocus();
+                                    _findFood(_controller.text);
+                                  }
+                              );
                             },
                           ),
                         ),

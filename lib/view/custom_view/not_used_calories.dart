@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class NotUsedCalories extends StatelessWidget {
-  final int target;
-  final int exercise;
+  final double target;
+  final double exercise;
   final double food;
 
   const NotUsedCalories({super.key, required this.target, required this.exercise, required this.food});
@@ -10,12 +10,16 @@ class NotUsedCalories extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final int formattedFood=food.round();
-    return Padding(
+    final int formattedTarget=target.round();
+    final int formattedExercise=exercise.round();
+    return Container(
       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      alignment: Alignment.center,
+      child: Wrap(
+        alignment: WrapAlignment.center,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        spacing: 8,
+        runSpacing: 4,
         children: [
           Column(
             mainAxisSize: MainAxisSize.min,
@@ -23,7 +27,7 @@ class NotUsedCalories extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                target.toString(),
+                formattedTarget.toString(),
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 16,
@@ -51,7 +55,7 @@ class NotUsedCalories extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                exercise.toString(),
+                formattedExercise.toString(),
                 style: TextStyle(
                   color: Colors.green,
                   fontSize: 16,
@@ -107,7 +111,7 @@ class NotUsedCalories extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                (target+exercise-formattedFood).toString(),
+                (formattedTarget+formattedExercise-formattedFood).toString(),
                 style: TextStyle(
                     color: Colors.deepOrange,
                     fontSize: 18,
