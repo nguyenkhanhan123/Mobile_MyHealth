@@ -53,28 +53,28 @@ Hệ thống Backend được thiết kế theo kiến trúc **Microservices** �
 *   **Theo dõi dinh dưỡng**: Theo dõi thông tin các chất dinh dưỡng trong cơ thể.
 
 <p align="center">
-  <img src="photo/health.png" height="400" />
+  <img src="image/health.png" height="400" />
 </p>
 
 ---
 *   **Nhật ký các món đã ăn**: Theo dõi các món ăn đã ăn vào trong ngày.
 
 <p align="center">
-  <img src="photo/meal_1.png" height="400" />
+  <img src="image/meal_1.png" height="400" />
 </p>
 
 ---
 *   **Gợi ý Thực đơn**: Lên thực đơn hàng ngày phù hợp với mục tiêu cân nặng.
 
 <p align="center">
-  <img src="photo/meal_plan.png" height="400" />
+  <img src="image/meal_plan.png" height="400" />
 </p>
 
 ---
 *   **Chatbot AI**: Hỏi đáp với chatbot.
 
 <p align="center">
-  <img src="photo/chatbot.png" height="400" />
+  <img src="image/chatbot.png" height="400" />
 </p>
 
 
