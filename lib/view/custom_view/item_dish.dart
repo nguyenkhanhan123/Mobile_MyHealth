@@ -1,12 +1,14 @@
 import 'package:al_datn_my_health/model/res/list_dish_res.dart';
 import 'package:al_datn_my_health/view/act/admin/fix_dish_act.dart';
+import 'package:al_datn_my_health/view/dialog/delete_stat_dialog.dart';
 import 'package:flutter/material.dart';
 
 class ItemDish extends StatelessWidget {
   final InfoDish infoDish;
   final VoidCallback onReload;
+  final VoidCallback onDelete;
 
-  const ItemDish({super.key, required this.infoDish, required this.onReload});
+  const ItemDish({super.key, required this.infoDish, required this.onReload, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +101,15 @@ class ItemDish extends StatelessWidget {
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () async {
+                  final isDelete = await showDialog<bool>(
+                    context: context,
+                    builder: (context) => DeleteStatDialog(),
+                  );
+                  if(isDelete==true) {
+                    onDelete();
+                  }
+                },
                 icon: Icon(Icons.delete, size: 28, color: Colors.black),
               ),
             ],

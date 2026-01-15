@@ -4,16 +4,10 @@ class InfoDishRes {
   final String message;
   final Dish dish;
 
-  InfoDishRes({
-    required this.message,
-    required this.dish,
-  });
+  InfoDishRes({required this.message, required this.dish});
 
   factory InfoDishRes.fromJson(Map<String, dynamic> json) {
-    return InfoDishRes(
-      message: json['message'] as String,
-      dish: Dish.fromJson(json['dish']),
-    );
+    return InfoDishRes(message: json['message'] as String, dish: Dish.fromJson(json['dish']));
   }
 }
 
@@ -49,12 +43,11 @@ class Dish {
       cookingSteps: json['cookingSteps'] as String,
       preparationSteps: json['preparationSteps'] as String,
       description: json['description'] as String,
-      ingredients: (json['ingredients'] as List<dynamic>)
-          .map((e) => BasicIngredient.fromJson(e as Map<String, dynamic>))
-          .toList(),
-      hashtags: (json['hashtags'] as List<dynamic>)
-          .map((e) => Hashtag.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      ingredients:
+          (json['ingredients'] as List<dynamic>)
+              .map((e) => BasicIngredient.fromJson(e as Map<String, dynamic>))
+              .toList(),
+      hashtags: (json['hashtags'] as List<dynamic>).map((e) => Hashtag.fromJson(e as Map<String, dynamic>)).toList(),
     );
   }
 }
@@ -63,6 +56,7 @@ class BasicIngredient {
   final int ingredientId;
   final String name;
   final double weight;
+  final double? gramPerUnit;
   final String unit;
   final String thumbnail;
 
@@ -70,6 +64,7 @@ class BasicIngredient {
     required this.ingredientId,
     required this.name,
     required this.weight,
+    this.gramPerUnit,
     required this.unit,
     required this.thumbnail,
   });
@@ -79,6 +74,7 @@ class BasicIngredient {
       ingredientId: json['ingredientId'] as int,
       name: json['name'] as String,
       weight: (json['weight'] as num).toDouble(),
+      gramPerUnit: (json['gramperunit'] as num?)?.toDouble(),
       unit: json['unit'] as String,
       thumbnail: json['thumbnail'] as String,
     );

@@ -138,6 +138,16 @@ class _DishFragState extends State<DishFrag> {
                                     _findDish("");
                                   }
                                 },
+                                onDelete: () async {
+                                  final success = await _delete(infoDish[index].id);
+                                  if (success) {
+                                    if (_controller.text.trim().isNotEmpty) {
+                                      _findDish(_controller.text.trim());
+                                    } else {
+                                      _findDish("");
+                                    }
+                                  }
+                                },
                               );
                             },
                           ),
@@ -287,6 +297,15 @@ class _DishFragState extends State<DishFrag> {
       isLoading = false;
       isLoadingMore = false;
     });
+  }
+
+  Future<bool> _delete(int id) async {
+    final res = await SeverApi().deleteDish(id);
+    if (res != null && res.message == "Delete dish successful") {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   @override

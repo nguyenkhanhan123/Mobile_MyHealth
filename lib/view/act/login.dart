@@ -294,6 +294,14 @@ class _LoginState extends State<Login> {
     final req = AccountReq(userName: username, passWord: password);
     final res = await SeverApi().loginAdmin(req);
     if (res != null && res.message == "Login successful") {
+      await Fluttertoast.showToast(
+        msg: "Đăng nhập thành công!",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.black87,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => MainActAdmin()),

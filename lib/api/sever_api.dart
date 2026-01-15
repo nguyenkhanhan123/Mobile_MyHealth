@@ -15,6 +15,7 @@ import 'package:al_datn_my_health/model/res/add_drink_res.dart';
 import 'package:al_datn_my_health/model/res/add_exercise_res.dart';
 import 'package:al_datn_my_health/model/res/add_notification_res.dart';
 import 'package:al_datn_my_health/model/res/create_user_info_res.dart';
+import 'package:al_datn_my_health/model/res/delete_dish_res.dart';
 import 'package:al_datn_my_health/model/res/get_nutri_meal_res.dart';
 import 'package:al_datn_my_health/model/res/get_required_index_res.dart';
 import 'package:al_datn_my_health/model/res/get_total_water_res.dart';
@@ -51,7 +52,7 @@ class SeverApi {
   final Dio _dio;
 
   SeverApi()
-    : _dio = Dio(BaseOptions(baseUrl: 'http://192.168.1.44:5000/', connectTimeout: Duration(seconds: 10),
+    : _dio = Dio(BaseOptions(baseUrl: 'http://10.108.141.82:5000/', connectTimeout: Duration(seconds: 10),
       receiveTimeout: Duration(seconds: 10)));
 
   Future<RegisterRes?> registerAccount(AccountReq req) async {
@@ -148,6 +149,15 @@ class SeverApi {
     try {
       final response = await _dio.post('add_dish', data: req.toMap());
       return AddDishRes.fromJson(response.data);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<DeleteDishRes?> deleteDish(int id) async {
+    try {
+      final response = await _dio.delete('delete_dish', queryParameters: {"id": id});
+      return DeleteDishRes.fromJson(response.data);
     } catch (e) {
       return null;
     }

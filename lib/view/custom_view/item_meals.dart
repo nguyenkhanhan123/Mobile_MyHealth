@@ -6,12 +6,14 @@ class ItemMeals extends StatelessWidget {
   final MealSession mealSession;
   final Function(MealItem) onSwap;
   final Function(MealItem) onDetail;
+  final Function(MealItem) onAdd;
 
   const ItemMeals({
     Key? key,
     required this.mealSession,
     required this.onSwap,
     required this.onDetail,
+    required this.onAdd,
   }) : super(key: key);
 
   @override
@@ -104,6 +106,19 @@ class ItemMeals extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
+                        ElevatedButton.icon(
+                          onPressed: () => onAdd(item),
+                          icon: const Icon(Icons.add, size: 18, color: Colors.white),
+                          label: const Text("Thêm", style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green, // Màu xanh chủ đạo
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                            minimumSize: const Size(0, 32),
+                            elevation: 0,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                          ),
+                        ),   SizedBox(width: 8),
                         OutlinedButton.icon(
                           onPressed: () => onSwap(item),
                           icon: Icon(Icons.swap_horiz, size: 18, color: Colors.orange),

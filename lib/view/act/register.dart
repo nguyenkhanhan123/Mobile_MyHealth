@@ -256,6 +256,14 @@ class _RegisterState extends State<Register> {
     final req = AccountReq(userName: username, passWord: password);
     final res = await SeverApi().registerAccount(req);
     if (res != null && res.message == "Account created successfully") {
+      await Fluttertoast.showToast(
+        msg: "Đăng ký thành công!",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.black87,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
        Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Login()),
