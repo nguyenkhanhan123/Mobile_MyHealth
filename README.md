@@ -77,6 +77,7 @@ Hệ thống Backend được thiết kế theo kiến trúc **Microservices** �
   <img src="image/chatbot.png" height="400" />
 </p>
 
+Chi tiết hơn có thể xem trong báo cáo của nhóm.
 
 ---
 * **Nhóm thực hiện**: Nguyễn Khánh An - Vũ Trung Lập
